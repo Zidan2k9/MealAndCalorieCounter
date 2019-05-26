@@ -12,18 +12,21 @@ const ItemCtrl = (function () {
 
     // Data Structures / State
     const data = {
-        items:[
-            {id:0,name:'Steak Dinner', calories:1200},
-            {id:1,name:'Cookie', calories:400},
-            {id:2,name:'Eggs', calories:300},
+        items: [
+            { id: 0, name: 'Steak Dinner', calories: 1200 },
+            { id: 1, name: 'Cookie', calories: 400 },
+            { id: 2, name: 'Eggs', calories: 300 },
         ],
-        currentItem:null,
-        totalCalories:0
+        currentItem: null,
+        totalCalories: 0
     }
 
     //Public methods
-    return{
-        logData:function(){
+    return {
+        getItems: function () {
+            return data.items;
+        },
+        logData: function () {
             return data;
         }
     }
@@ -34,21 +37,50 @@ const ItemCtrl = (function () {
 
 const UICtrl = (function () {
 
-    return{
-
+    const UISelectors = {
+        itemList:'#item-list'
     }
 
-})();
+    return {
+        populateItemsList: function (items) {
+            let html = '';
+
+            items.forEach(function (item) {
+                html += `<li class="collection-item" id="item-${item.id}">
+                <strong>${item.name}: </strong> <em>${item.calories} Calories</em>
+                <a href="#" class="secondary-content">
+                  <i class="edit-item fa fa-pencil"></i>
+                </a>
+              </li>`;
+            });
+
+            //Insert List items
+            document.querySelector(UISelectors.itemList).innerHTML = html;
+        }
+    }
+
+}) ();
 
 //App Controller
 
 const AppCtrl = (function (ItemCtrl, UICtrl) {
 
     //Public methods
-    return{
-        init:function(){
+    return {
+        init: function () {
             console.log('Initializing App...');
+
+            //Fetch Items from data structure
+            const items = ItemCtrl.getItems();
+
+            //Populate list with items
+            UICtrl.populateItemsList(items);
+
+            console.log(items);
         }
     }
 
 })(ItemCtrl, UICtrl);
+
+//Initialize the app
+AppCtrl.init();
