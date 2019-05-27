@@ -1,4 +1,4 @@
-/ Storage Controller
+// Storage Controller
 const StorageCtrl = (function () {
     // Public methods
     return {
